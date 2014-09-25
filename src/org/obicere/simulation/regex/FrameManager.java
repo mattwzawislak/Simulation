@@ -20,10 +20,10 @@ public class FrameManager {
         final JFrame frame = new JFrame("Regex Fractals");
 
         final Canvas canvas = new Canvas();
-        final JPanel controls = new JPanel();
+        final JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 
-        final JSpinner sizeSpinner = new JSpinner(new SpinnerNumberModel(10, 1, 15, 1));
         final JTextField regex = new JTextField(20);
+        final JSpinner sizeSpinner = new JSpinner(new SpinnerNumberModel(10, 1, 14, 1));
         final JButton graph = new JButton("Graph");
 
         regex.getDocument().addDocumentListener(new DocumentListener() {
@@ -56,12 +56,8 @@ public class FrameManager {
 
         graph.addActionListener(e -> canvas.applyRegex((Integer) sizeSpinner.getValue(), regex.getText()));
 
-        final BoxLayout layout = new BoxLayout(controls, BoxLayout.LINE_AXIS);
-
-        controls.setLayout(layout);
-        controls.add(sizeSpinner);
         controls.add(regex);
-        controls.add(Box.createHorizontalGlue());
+        controls.add(sizeSpinner);
         controls.add(graph);
 
         frame.add(canvas, BorderLayout.CENTER);
