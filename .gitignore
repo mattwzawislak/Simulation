@@ -1,43 +1,62 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+# Created by https://www.gitignore.io
 
-# Folder config file
-Desktop.ini
+### Intellij ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+/*.iml
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+## Directory-based project format:
+.idea/
+# if you remove the above rule, at least ignore the follwing:
 
-# =========================
-# Operating System Files
-# =========================
+# User-specific stuff:
+# .idea/workspace.xml
+# .idea/tasks.xml
+# .idea/dictionaries
 
-# OSX
-# =========================
+# Sensitive or high-churn files:
+# .idea/dataSources.ids
+# .idea/dataSources.xml
+# .idea/sqlDataSources.xml
+# .idea/dynamic.xml
+# .idea/uiDesigner.xml
 
-.DS_Store
-.AppleDouble
-.LSOverride
+# Gradle:
+# .idea/gradle.xml
+# .idea/libraries
 
-# Icon must end with two \r
-Icon
+# Mongo Explorer plugin:
+# .idea/mongoSettings.xml
 
-# Thumbnails
-._*
+## File-based project format:
+*.ipr
+*.iws
 
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
+## Plugin-specific files:
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+# IntelliJ
+out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+
+
+### Java ###
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
