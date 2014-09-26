@@ -1,13 +1,11 @@
 package org.obicere.simulation;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.awt.*;
 
 /**
  * @author Obicere
  */
-public class SimulationPanel extends JPanel {
+public class SimulationPanel extends JPanel implements Comparable<SimulationPanel> {
 
     private final Simulation simulation;
 
@@ -33,4 +31,8 @@ public class SimulationPanel extends JPanel {
         return simulation;
     }
 
+    @Override
+    public int compareTo(final SimulationPanel o) {
+        return simulation.getName().compareToIgnoreCase(o.getSimulation().getName());
+    }
 }

@@ -9,6 +9,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,7 @@ public class SimulationSelector {
         final JFrame frame = new JFrame("Simulation Selection");
 
         final LinkedList<SimulationPanel> panels = buildPanels(simulations);
+        Collections.sort(panels);
 
         final JPanel searchPanel = new JPanel();
         final JPanel content = new JPanel();
