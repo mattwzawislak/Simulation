@@ -63,7 +63,6 @@ public class DisplayPanel extends JPanel {
             final Counter counter = array.getCounter();
             final String format = String.format(FORMAT, algorithm.toString(), counter.getCompares(), counter.getAccesses());
             g.drawString(format, 3, 20);
-            array.cycleDone();
         }
     }
 

@@ -19,24 +19,18 @@ public class QuickSort implements AlgorithmImplementation {
         quickSort(array, 0, array.size() - 1, delay);
     }
 
-    public void quickSort(final SortArray array, final int left, final int right, final int delay) {
-        if (left >= right) {
-            return;
-        }
-        int middle = (left + right) / 2;
+    private int partition(final SortArray array, int left, int right, final int delay) {
+        int i = left;
+        int j = right;
+        final int pivot = (left + right) / 2;
 
-        int i = left, j = right;
         while (i <= j) {
-            while (array.compare(i, middle) < 0) {
-                array.sleep(delay);
+            while (array.compare(i, pivot) < 0) {
                 i++;
             }
-
-            while (array.compare(j, middle) > 0) {
-                array.sleep(delay);
+            while (array.compare(j, pivot) > 0) {
                 j--;
             }
-
             if (i <= j) {
                 array.swap(i, j);
                 i++;
@@ -44,14 +38,17 @@ public class QuickSort implements AlgorithmImplementation {
             }
         }
 
-        if (left < j) {
-            quickSort(array, left, j, delay);
-        }
+        return i;
+    }
 
-        if (right > i) {
-            quickSort(array, i, right, delay);
+    private void quickSort(final SortArray array, int left, int right, final int delay) {
+        int index = partition(array, left, right, delay);
+        if (left < index - 1) {
+            quickSort(array, left, index - 1, delay);
         }
-
+        if (index < right) {
+            quickSort(array, index, right, delay);
+        }
     }
 
 }

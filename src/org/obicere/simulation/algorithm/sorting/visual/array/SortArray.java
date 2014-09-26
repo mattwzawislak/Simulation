@@ -122,14 +122,18 @@ public class SortArray {
         check(i);
         check(j);
         counter.compared();
-        return Integer.compare(get(i), get(j));
+        final int x = get(i);
+        final int y = get(j);
+        return x - y;
     }
 
     public int compareUnique(final int i, final int j) {
         check(i);
         check(j);
         counter.compared();
-        return Integer.compare(getUnique(i), getUnique(j));
+        final int x = getUnique(i);
+        final int y = getUnique(j);
+        return x - y;
     }
 
     private void check(final int i) {
@@ -144,6 +148,7 @@ public class SortArray {
         } catch (final Exception e) {
             e.printStackTrace();
         }
+        marker.clear();
     }
 
     @Override
