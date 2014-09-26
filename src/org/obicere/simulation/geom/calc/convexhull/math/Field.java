@@ -65,7 +65,6 @@ public class Field {
         final int leftMost = getLeftMost(array);
         Point pointOnHull = array[leftMost];
         final Point finalEnd = pointOnHull;
-        int i = 0;
         int last = leftMost;
         marker.markUnique(leftMost);
         while (true) {
