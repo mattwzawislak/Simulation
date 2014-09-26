@@ -40,6 +40,20 @@ public class SimulationSelector {
         this.blankFont = search.getFont().deriveFont(Font.ITALIC);
         this.presetFont = search.getFont();
 
+        final Runnable update = new Runnable() {
+
+            @Override
+            public void run() {
+                final String phrase = search.getText();
+                if (phrase == null || phrase.equals(SEARCH)) {
+                    return;
+                }
+                filter(phrase, content, panels, box.isSelected());
+            }
+        };
+
+        box.addActionListener(e -> update.run());
+
         search.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(final FocusEvent e) {
@@ -61,29 +75,23 @@ public class SimulationSelector {
             }
         });
 
+
         search.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                updateSearch();
+                update.run();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                updateSearch();
+                update.run();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                updateSearch();
+                update.run();
             }
 
-            private void updateSearch() {
-                final String phrase = search.getText();
-                if (phrase == null || phrase.equals(SEARCH)) {
-                    return;
-                }
-                filter(phrase, content, panels, box.isSelected());
-            }
         });
 
         searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.LINE_AXIS));
