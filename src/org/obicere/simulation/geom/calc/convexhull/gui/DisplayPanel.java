@@ -22,6 +22,9 @@ public class DisplayPanel extends JPanel {
     private Polygon polygon;
 
     public void clearField() {
+        if (pointField.isCalculating()) {
+            return;
+        }
         pointField.clear();
         repaint();
     }
@@ -49,7 +52,7 @@ public class DisplayPanel extends JPanel {
     }
 
     public void calculate(final int delay) {
-        if (pointField.size() == 0) {
+        if (pointField.size() == 0 || pointField.isCalculating()) {
             return;
         }
         polygon = new Polygon();
