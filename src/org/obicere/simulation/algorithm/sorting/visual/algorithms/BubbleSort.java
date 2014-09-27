@@ -19,13 +19,13 @@ public class BubbleSort implements AlgorithmImplementation {
         boolean swapped = true;
         int j = 0;
         while (swapped) {
-            array.sleep(delay);
             swapped = false;
             j++;
             for (int i = 0; i < array.size() - j; i++) {
                 final int compare = array.compare(i, i + 1);
                 if (compare > 0) {
                     array.swap(i, i + 1);
+                    array.sleep(delay);
                     swapped = true;
                 }
             }

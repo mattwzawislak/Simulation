@@ -15,19 +15,27 @@ public class SortArray {
 
     private final int[] array;
 
+    private final int offset;
+
+    private final int length;
+
     public SortArray(final int length) {
         this.marker = new Marker(length);
         this.counter = new Counter();
         this.array = new int[length];
+        this.offset = 0;
+        this.length = length;
 
         fill();
         shuffle(); // Shaken, not stirred
     }
 
-    public SortArray(final int[] array, final Counter counter) {
-        this.marker = new Marker(array.length);
+    private SortArray(final int[] array, final Counter counter, final Marker marker, final int offset, final int end) {
+        this.marker = marker;
         this.counter = counter;
         this.array = array;
+        this.offset = offset;
+        this.length = end - offset;
     }
 
     private void fill() {
@@ -54,7 +62,14 @@ public class SortArray {
     }
 
     public int size() {
-        return array.length;
+        return length;
+    }
+
+    public void set(final int i, final int value) {
+        check(i);
+        marker.mark(i);
+        counter.accessed();
+        array[i] = value;
     }
 
     public int get(final int i) {
@@ -78,20 +93,18 @@ public class SortArray {
 
     public SortArray select(final int i, final int j) {
         check(i);
-        check(j);
-        marker.markRange(i, j);
+        check(j - 1);
+        marker.markRange(i, j - 1);
         counter.multiAccessed(j - i);
-        final int[] copy = Arrays.copyOfRange(array, i, j);
-        return new SortArray(copy, counter);
+        return new SortArray(array, counter, marker, i, j);
     }
 
     public SortArray selectUnique(final int i, final int j) {
         check(i);
-        check(j);
-        marker.markRangeUnique(i, j);
+        check(j - 1);
+        marker.markRangeUnique(i, j - 1);
         counter.multiAccessed(j - i);
-        final int[] copy = Arrays.copyOfRange(array, i, j);
-        return new SortArray(copy, counter);
+        return new SortArray(array, counter, marker, i, j);
     }
 
     public void swap(final int i, final int j) {
@@ -118,6 +131,10 @@ public class SortArray {
         marker.clear();
     }
 
+    public int offset() {
+        return offset;
+    }
+
     public int compare(final int i, final int j) {
         check(i);
         check(j);
@@ -137,8 +154,8 @@ public class SortArray {
     }
 
     private void check(final int i) {
-        if (0 > i || i >= array.length) {
-            throw new IndexOutOfBoundsException("Index: " + i + ", is out of bounds for size: " + array.length);
+        if (offset > i || i >= offset + size()) {
+            throw new IndexOutOfBoundsException("Index: " + i + ", is out of bounds for size: " + offset + ", " + (offset + size()));
         }
     }
 
@@ -149,6 +166,12 @@ public class SortArray {
             e.printStackTrace();
         }
         marker.clear();
+    }
+
+    public int[] cloneData() {
+        final int[] nums = new int[length];
+        System.arraycopy(array, offset, nums, 0, length);
+        return nums;
     }
 
     @Override

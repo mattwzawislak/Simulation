@@ -7,8 +7,13 @@ import org.obicere.simulation.algorithm.sorting.visual.array.SortArray;
  */
 public enum Algorithm {
 
+    BOGO_SORT(new BogoSort()),
+
     BUBBLE_SORT(new BubbleSort()),
-    QUICK_SORT(new QuickSort());
+
+    INSERTION_SORT(new InsertionSort()),
+
+    MERGE_SORT(new MergeSort());
 
     private final AlgorithmImplementation impl;
 
@@ -23,7 +28,6 @@ public enum Algorithm {
         impl.sort(array, delay);
         array.sleep(100); // Allow final paints to finish, etc.
         computing = false;
-        System.out.println(array);
     }
 
     public boolean isComputing() {
