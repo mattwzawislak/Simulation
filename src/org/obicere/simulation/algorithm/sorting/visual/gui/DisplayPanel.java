@@ -18,8 +18,6 @@ public class DisplayPanel extends JPanel {
     private SortArray array;
     private int       length;
     private Algorithm algorithm;
-    private float xOverflow = 0;
-    private float yOverflow = 0;
 
     @Override
     public Dimension getPreferredSize() {
@@ -41,8 +39,6 @@ public class DisplayPanel extends JPanel {
     public void paintComponent(final Graphics g) {
         if (array != null) {
             super.paintComponent(g);
-            xOverflow = 0;
-            yOverflow = 0;
             final float width = getWidth();
             final float height = getHeight();
 
@@ -68,22 +64,14 @@ public class DisplayPanel extends JPanel {
 
     private void drawBar(final Graphics g, final float x, final float y, final float width, final float height, final Color color) {
         g.setColor(color);
-        if(width < 1){
-            xOverflow += width;
-            xOverflow %= 1;
-        }
-        if(height < 1){
-            yOverflow += height;
-            yOverflow %= 1;
-        }
         final int newX = (int) x;
         final int newY = (int) y;
-        final int newWidth = (int) (width + xOverflow);
-        final int newHeight = (int) (height + yOverflow) + 1; // Lets avoid random fragments along the bottom
+        final int newWidth = (int) Math.ceil(width);
+        final int newHeight = (int) Math.ceil(height);
         g.fillRect(newX, newY, newWidth, newHeight);
-        if (width > 2) {
+        if (newWidth >= 2) {
             g.setColor(Color.BLACK);
-            g.drawRect(newX, newY, newWidth, newHeight);
+            g.drawLine(newX, newY, newX, newHeight + newY); // Fake a rectangle since both sides have lines
         }
     }
 
