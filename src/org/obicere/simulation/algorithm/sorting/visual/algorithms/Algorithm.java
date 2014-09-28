@@ -13,7 +13,9 @@ public enum Algorithm {
 
     INSERTION_SORT(new InsertionSort()),
 
-    MERGE_SORT(new MergeSort());
+    MERGE_SORT(new MergeSort()),
+
+    QUICK_SORT(new QuickSort());
 
     private final AlgorithmImplementation impl;
 

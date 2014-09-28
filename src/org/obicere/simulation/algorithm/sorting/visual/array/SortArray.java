@@ -144,6 +144,11 @@ public class SortArray {
         return x - y;
     }
 
+    public int compareValues(final int a, final int b){
+        counter.compared();
+        return a - b;
+    }
+
     public int compareUnique(final int i, final int j) {
         check(i);
         check(j);
