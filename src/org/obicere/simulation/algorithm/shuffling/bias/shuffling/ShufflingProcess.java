@@ -38,8 +38,8 @@ public class ShufflingProcess {
         for (int i = 0; i < length; i++) {
             newSet[i] = i;
         }
-        algorithm.shuffle(newSet);
-        data.register(newSet);
+        final int[] shuffled = algorithm.shuffle(newSet);
+        data.register(shuffled);
     }
 
     public boolean isCalculating(){

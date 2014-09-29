@@ -7,7 +7,7 @@ public interface ShufflingAlgorithm {
 
     public String getName();
 
-    public void shuffle(final int[] nums);
+    public int[] shuffle(final int[] nums);
 
     default public void swap(final int[] nums, final int i, final int j){
         final int temp = nums[i];

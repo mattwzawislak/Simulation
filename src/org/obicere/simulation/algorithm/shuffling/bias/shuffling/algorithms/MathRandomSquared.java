@@ -15,10 +15,11 @@ public class MathRandomSquared implements ShufflingAlgorithm {
     }
 
     @Override
-    public void shuffle(int[] nums) {
+    public int[] shuffle(int[] nums) {
         for (int i = nums.length - 1; i > 0; i--){
             final int index = (int) ((i + 1) * Math.random() * Math.random());
             swap(nums, index, i);
         }
+        return nums;
     }
 }

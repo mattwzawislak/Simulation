@@ -17,11 +17,12 @@ public class FisherYates implements ShufflingAlgorithm {
     }
 
     @Override
-    public void shuffle(int[] nums) {
+    public int[] shuffle(int[] nums) {
         final Random random = new Random();
         for (int i = nums.length - 1; i > 0; i--){
             final int index = random.nextInt(i + 1);
             swap(nums, index, i);
         }
+        return nums;
     }
 }

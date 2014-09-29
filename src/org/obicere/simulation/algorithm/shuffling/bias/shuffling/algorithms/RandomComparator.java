@@ -12,12 +12,12 @@ public class RandomComparator implements ShufflingAlgorithm {
     private static final String NAME = "Random-Comparator Sort";
 
     @Override
-    public String getName(){
+    public String getName() {
         return NAME;
     }
 
     @Override
-    public void shuffle(final int[] nums) {
+    public int[] shuffle(final int[] nums) {
         final Random random = new Random();
         for (int i = 0; i < nums.length; i++) {
             boolean swapped = false;
@@ -32,6 +32,6 @@ public class RandomComparator implements ShufflingAlgorithm {
                 break;
             }
         }
-
+        return nums;
     }
 }

@@ -13,6 +13,8 @@ import java.awt.*;
  */
 public class BiasDisplayPanel extends JPanel {
 
+    private static final Dimension DEFAULT_PREFERRED_SIZE = new Dimension(500, 500);
+
     private static final int PADDING             = 2;
     private static final int DEFAULT_SQUARE_SIZE = 5;
 
@@ -33,6 +35,11 @@ public class BiasDisplayPanel extends JPanel {
 
     private float adjustedPixelsFor(final int index, final int padding, final float squareSize) {
         return padding * (index + 1) + squareSize * index;
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return DEFAULT_PREFERRED_SIZE;
     }
 
     @Override
