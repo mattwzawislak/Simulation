@@ -88,6 +88,11 @@ public class SortArray {
 
     public int getSilent(final int i) {
         check(i);
+        marker.markUnique(i);
+        return array[i];
+    }
+
+    public int getValue(final int i){
         return array[i];
     }
 

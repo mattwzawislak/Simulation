@@ -33,8 +33,8 @@ public class DisplayPanel extends JPanel {
         this.length = size;
 
         this.process = new SortingProcess(algorithm, size);
-        new Thread(() -> process.sort(delay)).start();
-        new ConditionalTimer(5, e -> repaint(), algorithm::isComputing).start();
+        process.sort(delay);
+        new ConditionalTimer(5, e -> repaint(), process::isCalculating).start();
 
     }
 
@@ -54,7 +54,7 @@ public class DisplayPanel extends JPanel {
             final float barHeight = height / length;
 
             for (int i = 0; i < length; i++) {
-                final int value = array.getSilent(i);
+                final int value = array.getValue(i);
                 final float x = barWidth * i;
                 final float y = barHeight * value;
 

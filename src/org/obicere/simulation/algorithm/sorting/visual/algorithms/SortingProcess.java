@@ -34,10 +34,19 @@ public class SortingProcess {
     }
 
     public void sort(final int delay) {
-        calculating.set(true);
-        this.thread = new Thread(() -> algorithm.sort(array, delay));
+        this.thread = new Thread(() -> {
+            calculating.set(true);
+            algorithm.sort(array, delay);
+            for (int i = 1; i < array.size(); i++) {
+                if (i != array.getSilent(i - 1)) {
+                    System.err.println("Sorting algorithm failed.");
+                    return;
+                }
+                array.sleep(delay);
+            }
+            calculating.set(false);
+        });
         thread.start();
-        calculating.set(false);
     }
 
     public void halt() {

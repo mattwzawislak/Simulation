@@ -19,21 +19,12 @@ public enum Algorithm {
 
     private final AlgorithmImplementation impl;
 
-    private volatile boolean computing = false;
-
     private Algorithm(final AlgorithmImplementation impl) {
         this.impl = impl;
     }
 
     public void sort(final SortArray array, final int delay) {
-        computing = true;
         impl.sort(array, delay);
-        array.sleep(100); // Allow final paints to finish, etc.
-        computing = false;
-    }
-
-    public boolean isComputing() {
-        return computing;
     }
 
     @Override
