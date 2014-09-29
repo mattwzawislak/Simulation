@@ -20,7 +20,7 @@ public class FrameManager {
 
         final JComboBox<Algorithm> algorithmSelector = new JComboBox<>(Algorithm.values());
         final JLabel countLabel = new JLabel("Samples: ");
-        final JSpinner countSelector = new JSpinner(new SpinnerNumberModel(100, 1, 200000, 1));
+        final JSpinner countSelector = new JSpinner(new SpinnerNumberModel(100, 1, 1000000, 1));
         final JLabel sizeLabel = new JLabel("Size: ");
         final JSpinner sizeSelector = new JSpinner(new SpinnerNumberModel(25, 1, 500, 1));
         final JButton start = new JButton("Start");
