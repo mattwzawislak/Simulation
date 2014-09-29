@@ -1,5 +1,7 @@
 package org.obicere.simulation.regex;
 
+import org.obicere.utility.util.ConditionalTimer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
@@ -17,14 +19,7 @@ public class Canvas extends JPanel {
         System.gc();
         this.graph = new Graph(size, regex);
         new Thread(graph::apply).start();
-        final Timer timer = new Timer(15, null);
-        timer.addActionListener(e -> {
-            if (!graph.isCalculating()) {
-                timer.stop();
-            }
-            repaint();
-        });
-        timer.start();
+        new ConditionalTimer(15, e -> repaint(), graph::isCalculating).start();
     }
 
     @Override
