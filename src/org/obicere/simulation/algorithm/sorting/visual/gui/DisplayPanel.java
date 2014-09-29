@@ -1,6 +1,7 @@
 package org.obicere.simulation.algorithm.sorting.visual.gui;
 
 import org.obicere.simulation.algorithm.sorting.visual.algorithms.Algorithm;
+import org.obicere.simulation.algorithm.sorting.visual.algorithms.SortingProcess;
 import org.obicere.simulation.algorithm.sorting.visual.array.Counter;
 import org.obicere.simulation.algorithm.sorting.visual.array.SortArray;
 import org.obicere.utility.util.ConditionalTimer;
@@ -15,9 +16,9 @@ public class DisplayPanel extends JPanel {
 
     private static final String FORMAT = "%s - %d comparisons - %d array accesses.";
 
-    private SortArray array;
     private int       length;
-    private Algorithm algorithm;
+
+    private SortingProcess process;
 
     @Override
     public Dimension getPreferredSize() {
@@ -26,19 +27,23 @@ public class DisplayPanel extends JPanel {
 
     public void startAlgorithm(final Algorithm algorithm, final int size, final int delay) {
 
-        this.array = new SortArray(size);
+        if(process != null){
+            process.halt();
+        }
         this.length = size;
-        this.algorithm = algorithm;
 
-        new Thread(() -> algorithm.sort(array, delay)).start();
-        new ConditionalTimer(15, e -> repaint(), algorithm::isComputing).start();
+        this.process = new SortingProcess(algorithm, size);
+        new Thread(() -> process.sort(delay)).start();
+        new ConditionalTimer(5, e -> repaint(), algorithm::isComputing).start();
 
     }
 
     @Override
     public void paintComponent(final Graphics g) {
-        if (array != null) {
+        if (process != null) {
             super.paintComponent(g);
+            final SortArray array = process.getArray();
+            final Algorithm algorithm = process.getAlgorithm();
             final float width = getWidth();
             final float height = getHeight();
 

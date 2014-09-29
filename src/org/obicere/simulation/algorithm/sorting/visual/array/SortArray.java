@@ -168,7 +168,8 @@ public class SortArray {
         try {
             Thread.sleep(delay);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // If this error is thrown, the current process was closed.
+            // So we can just ignore this error. Sloppy, I know.
         }
         marker.clear();
     }
