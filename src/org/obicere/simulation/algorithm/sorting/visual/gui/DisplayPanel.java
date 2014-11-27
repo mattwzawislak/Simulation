@@ -8,6 +8,7 @@ import org.obicere.utility.util.ConditionalTimer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.TimerTask;
 
 /**
  * @author Obicere
@@ -34,7 +35,12 @@ public class DisplayPanel extends JPanel {
 
         this.process = new SortingProcess(algorithm, size);
         process.sort(delay);
-        new ConditionalTimer(5, e -> repaint(), process::isCalculating).start();
+        new ConditionalTimer(5, new TimerTask() {
+            @Override
+            public void run() {
+                repaint();
+            }
+        }, process::isCalculating);
 
     }
 

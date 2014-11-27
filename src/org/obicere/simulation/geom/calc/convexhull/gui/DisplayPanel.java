@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.TimerTask;
 
 /**
  * @author Obicere
@@ -57,7 +58,12 @@ public class DisplayPanel extends JPanel {
         }
         polygon = new Polygon();
         new Thread(() -> pointField.getConvexHull(polygon, delay)).start();
-        new ConditionalTimer(10, e -> repaint(), pointField::isCalculating).start();
+        new ConditionalTimer(10,new TimerTask() {
+            @Override
+            public void run() {
+                repaint();
+            }
+        }, pointField::isCalculating);
     }
 
     @Override

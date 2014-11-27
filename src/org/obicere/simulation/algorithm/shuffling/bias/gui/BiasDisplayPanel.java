@@ -7,6 +7,7 @@ import org.obicere.utility.util.ConditionalTimer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.TimerTask;
 
 /**
  * @author Obicere
@@ -26,7 +27,12 @@ public class BiasDisplayPanel extends JPanel {
         this.process = new ShufflingProcess(algorithm, size, count);
 
         new Thread(process::startTesting).start();
-        new ConditionalTimer(10, e -> repaint(), process::isCalculating).start();
+        new ConditionalTimer(10, new TimerTask() {
+            @Override
+            public void run() {
+                repaint();
+            }
+        }, process::isCalculating);
     }
 
     private int pixelsFor(final int index) {

@@ -46,6 +46,7 @@ public class SortingProcess {
             }
             calculating.set(false);
         });
+        thread.setDaemon(true);
         thread.start();
     }
 

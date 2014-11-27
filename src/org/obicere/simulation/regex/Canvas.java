@@ -2,9 +2,12 @@ package org.obicere.simulation.regex;
 
 import org.obicere.utility.util.ConditionalTimer;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.util.Objects;
+import java.util.TimerTask;
 
 /**
  * @author Obicere
@@ -19,7 +22,12 @@ public class Canvas extends JPanel {
         System.gc();
         this.graph = new Graph(size, regex);
         new Thread(graph::apply).start();
-        new ConditionalTimer(15, e -> repaint(), graph::isCalculating).start();
+        new ConditionalTimer(15, new TimerTask() {
+            @Override
+            public void run() {
+                repaint();
+            }
+        }, graph::isCalculating);
     }
 
     @Override
