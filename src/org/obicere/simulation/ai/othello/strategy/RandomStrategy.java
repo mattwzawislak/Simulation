@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class RandomStrategy implements Strategy {
 
-    private static final String NAME = "Random";
+    private static final String NAME = "random";
 
     private final Random random = new Random();
 

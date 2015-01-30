@@ -8,20 +8,19 @@ import org.obicere.simulation.ai.othello.strategy.Strategy;
  */
 public class Game implements Runnable {
 
-    private static final long MOVE_DELAY = 5000;
+    private static final long MOVE_DELAY = 0;
 
     private static final long START_PLAYED = 0b00000000_00000000_00000000_00011000_00011000_00000000_00000000_00000000L;
     private static final long START_PIECES = 0b00000000_00000000_00000000_00010000_00001000_00000000_00000000_00000000L;
 
     private volatile Board currentBoard;
 
-    private volatile boolean gameOver;
+    private volatile boolean gameOver = true;
 
     private final Strategy whiteStrategy;
     private final Strategy blackStrategy;
 
     public Game(final Strategy whiteStrategy, final Strategy blackStrategy) {
-        this.currentBoard = new Board(START_PLAYED, START_PIECES);
         this.whiteStrategy = whiteStrategy;
         this.blackStrategy = blackStrategy;
     }
@@ -30,19 +29,25 @@ public class Game implements Runnable {
         return currentBoard;
     }
 
+    public void start(){
+        this.gameOver = false;
+        this.currentBoard = new Board(START_PLAYED, START_PIECES);
+
+        final Thread gameThread = new Thread(this);
+        gameThread.setDaemon(true);
+        gameThread.start();
+    }
+
     @Override
     public void run() {
         Player current = Player.WHITE;
         boolean noMovesLeft = false;
         while (true) {
-            //System.out.printf("Player %s's turn%n", current);
             final Move[] moves = currentBoard.getMovesFor(current);
             if (moves == null || moves.length == 0) {
                 if (noMovesLeft) {
-                    //System.out.println("No moves remain for either player. Game ending.");
                     break;
                 }
-                //System.out.println("No moves for this player. Next player's turn.");
                 noMovesLeft = true;
 
                 if (current == Player.BLACK) {

@@ -2,7 +2,6 @@ package org.obicere.simulation.ai.othello.gui;
 
 import org.obicere.simulation.ai.othello.game.Board;
 import org.obicere.simulation.ai.othello.game.Game;
-import org.obicere.simulation.ai.othello.game.Player;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -11,7 +10,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.font.FontRenderContext;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * @author Obicere
@@ -24,6 +24,14 @@ public class BoardPanel extends JPanel {
     public BoardPanel(final Game game) {
         this.game = game;
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                if (game.isGameOver()) {
+                    game.start();
+                }
+            }
+        });
     }
 
     @Override
@@ -39,15 +47,18 @@ public class BoardPanel extends JPanel {
 
         final Board board = game.getCurrentBoard();
 
-        long played = board.getPlayed();
-        long pieces = board.getPieces();
+        if (board != null) {
 
-        for (int i = 0; i < 64; i++) {
-            if ((played & 1) != 0) {
-                drawSquare(g2, i, (int) (pieces & 1), squareSize);
+            long played = board.getPlayed();
+            long pieces = board.getPieces();
+
+            for (int i = 0; i < 64; i++) {
+                if ((played & 1) != 0) {
+                    drawSquare(g2, i, (int) (pieces & 1), squareSize);
+                }
+                played >>= 1;
+                pieces >>= 1;
             }
-            played >>= 1;
-            pieces >>= 1;
         }
 
         for (int i = 0; i < size; i += squareSize) {
@@ -55,8 +66,10 @@ public class BoardPanel extends JPanel {
             g2.drawLine(0, i, size, i);
         }
 
-        if (game.isGameOver()) {
-            drawGameOverScreen(g2);
+        if (board != null) {
+            if (game.isGameOver()) {
+                drawGameOverScreen(g2);
+            }
         }
     }
 

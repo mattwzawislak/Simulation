@@ -27,6 +27,11 @@ public class Board {
         this.pieces = pieces;
     }
 
+    public Board(final Board board) {
+        this.played = board.played;
+        this.pieces = board.pieces;
+    }
+
     public int getScoreDifference() {
         int delta = 0;
         for (int i = 0; i < 8; i++) {
@@ -48,19 +53,20 @@ public class Board {
         final Player player = move.getPlayer();
         int o = move.getOrientation();
         int k = 0;
+        Board newBoard = new Board(this);
         while (o != 0) {
             if ((o & 1) != 0) {
                 final int di = DELTA[k][0];
                 final int dj = DELTA[k][1];
-                captureTowards(i, j, di, dj, player);
+                newBoard = captureTowards(newBoard, i, j, di, dj, player);
             }
             o >>= 1;
             k++;
         }
-        return new Board(played, pieces);
+        return newBoard;
     }
 
-    private void captureTowards(final int i, final int j, final int di, final int dj, final Player player) {
+    private Board captureTowards(final Board board, final int i, final int j, final int di, final int dj, final Player player) {
         int ci = i;
         int cj = j;
         int capture = 0;
@@ -71,23 +77,24 @@ public class Board {
             // already present. To counter this, we assume that there is a capture available.
             final Player piece = pieceAt(ci, cj);
             if (piece == player && capture > 0) {
-                return;
+                return board;
             }
 
             capture++;
-            capture(ci, cj, player);
+            capture(board, ci, cj, player);
             ci += di;
             cj += dj;
         }
+        return board;
     }
 
-    private void capture(final int i, final int j, final Player player) {
+    private void capture(final Board board, final int i, final int j, final Player player) {
         final int shift = shiftForCoordinate(i, j);
-        played = set(played, shift);
+        board.played = set(board.played, shift);
         if (player == Player.BLACK) {
-            pieces = clear(pieces, shift);
+            board.pieces = clear(board.pieces, shift);
         } else {
-            pieces = set(pieces, shift);
+            board.pieces = set(board.pieces, shift);
         }
     }
 

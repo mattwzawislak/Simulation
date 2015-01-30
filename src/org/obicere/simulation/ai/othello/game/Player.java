@@ -19,4 +19,11 @@ public enum Player {
         return id;
     }
 
+    public Player other() {
+        if (this == BLACK) {
+            return WHITE;
+        }
+        return BLACK;
+    }
+
 }
