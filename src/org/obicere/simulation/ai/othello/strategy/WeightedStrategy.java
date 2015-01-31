@@ -8,7 +8,7 @@ import org.obicere.simulation.ai.othello.game.Player;
  * @author Obicere
  * @version 1.0
  */
-public class WeightedStrategy implements Strategy {
+public class WeightedStrategy extends Strategy {
 
     private static final double[][] WEIGHTS = new double[][]{
             {4.0, 1.0, 2.7, 2.0, 2.0, 2.7, 1.0, 4.0},
@@ -32,7 +32,7 @@ public class WeightedStrategy implements Strategy {
             {0, -1}
     };
 
-    private static final int DEPTH = 6;
+    private static final int DEPTH = 10;
 
     private static final String NAME = "weighted";
 

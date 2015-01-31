@@ -10,7 +10,7 @@ import java.util.Random;
  * @author Obicere
  * @version 1.0
  */
-public class RandomStrategy implements Strategy {
+public class RandomStrategy extends Strategy {
 
     private static final String NAME = "random";
 

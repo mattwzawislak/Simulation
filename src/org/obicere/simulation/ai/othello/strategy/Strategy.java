@@ -8,10 +8,15 @@ import org.obicere.simulation.ai.othello.game.Player;
  * @author Obicere
  * @version 1.0
  */
-public interface Strategy {
+public abstract class Strategy {
 
-    public String name();
+    public abstract String name();
 
-    public Move getNextMove(final Board board, final Player player);
+    public abstract Move getNextMove(final Board board, final Player player);
+
+    @Override
+    public String toString(){
+        return name();
+    }
 
 }
