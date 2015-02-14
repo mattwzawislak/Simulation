@@ -23,6 +23,7 @@ public class InsertionSort implements AlgorithmImplementation {
                 array.sleep(delay);
                 j--;
             }
+            array.sleep(delay);
         }
     }
 }

@@ -32,7 +32,7 @@ public class WeightedStrategy extends Strategy {
             {0, -1}
     };
 
-    private static final int DEPTH = 10;
+    private static final int DEPTH = 6;
 
     private static final String NAME = "weighted";
 
@@ -58,9 +58,6 @@ public class WeightedStrategy extends Strategy {
         }
         Move bestMove = moves[0];
         double bestPlay = playMove(board, bestMove);
-        if (depth == 0) {
-            System.out.printf("%s: [%g]%n", bestMove, bestPlay);
-        }
         for (int i = 1; i < length; i++) {
             final Move move = moves[i];
             double play = playMove(board, move);
@@ -70,16 +67,10 @@ public class WeightedStrategy extends Strategy {
             if (nextMove != null) {
                 play -= playMove(nextBoard, nextMove);
             }
-            if (depth == 0) {
-                System.out.printf("%s: [%g]%n", move, play);
-            }
             if (play > bestPlay) {
                 bestMove = moves[i];
                 bestPlay = play;
             }
-        }
-        if(depth == 0) {
-            System.out.printf("playing move: %s [%g]%n", bestMove, bestPlay);
         }
         return bestMove;
     }

@@ -19,6 +19,6 @@ public class OthelloGame extends Simulation {
 
     @Override
     public void main() {
-        SwingUtilities.invokeLater(() -> new OthelloFrameManager());
+        SwingUtilities.invokeLater(OthelloFrameManager::new);
     }
 }

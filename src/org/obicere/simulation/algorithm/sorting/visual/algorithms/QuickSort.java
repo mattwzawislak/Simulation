@@ -25,21 +25,24 @@ public class QuickSort implements AlgorithmImplementation {
         }
 
         final int middle = start + (end - start) / 2;
-        final int pivot = array.getUnique(middle);
+        final int pivot = array.get(middle);
 
         int i = start;
         int j = end;
         while (i <= j) {
             while (array.compareValues(array.get(i), pivot) < 0) {
+                array.getMarker().markUnique(middle);
                 array.sleep(delay);
                 i++;
             }
 
             while (array.compareValues(array.get(j), pivot) > 0) {
+                array.getMarker().markUnique(middle);
                 array.sleep(delay);
                 j--;
             }
 
+            array.getMarker().markUnique(middle);
             if (i <= j) {
                 array.swap(i, j);
                 array.sleep(delay);

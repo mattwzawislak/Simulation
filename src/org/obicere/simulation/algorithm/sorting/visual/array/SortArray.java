@@ -116,7 +116,6 @@ public class SortArray {
         check(i);
         check(j);
         marker.markSwap(i, j);
-        counter.multiAccessed(2);
         final int temp = get(i);
         array[i] = get(j);
         array[j] = temp;
@@ -175,6 +174,7 @@ public class SortArray {
         } catch (final Exception e) {
             // If this error is thrown, the current process was closed.
             // So we can just ignore this error. Sloppy, I know.
+            Thread.currentThread().interrupt();
         }
         marker.clear();
     }

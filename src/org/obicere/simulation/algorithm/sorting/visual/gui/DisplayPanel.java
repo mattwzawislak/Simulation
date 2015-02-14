@@ -35,7 +35,7 @@ public class DisplayPanel extends JPanel {
 
         this.process = new SortingProcess(algorithm, size);
         process.sort(delay);
-        new ConditionalTimer(5, new TimerTask() {
+        new ConditionalTimer(15, new TimerTask() {
             @Override
             public void run() {
                 repaint();
