@@ -38,14 +38,14 @@ public class MinesweeperFrameManager {
 
         newGame.addActionListener(e -> {
             panel.newGame((int) width.getValue(), (int) height.getValue(), (int) bombCount.getValue());
-            frame.validate();
+            frame.pack();
             frame.repaint();
         });
 
         frame.add(panel, BorderLayout.CENTER);
         frame.add(controls, BorderLayout.SOUTH);
 
-        //frame.setResizable(false);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

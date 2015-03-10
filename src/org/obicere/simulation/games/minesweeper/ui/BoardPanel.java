@@ -19,7 +19,7 @@ import java.awt.event.MouseEvent;
 public class BoardPanel extends JPanel {
 
 
-    private static final int SQUARE_SIZE = 20;
+    private static final int SQUARE_SIZE = 25;
 
     private static final Color FILL_SELECT_COLOR = new Color(0xD0D0D0);
     private static final Font  FLAG_FONT         = new Font("Segoe UI Symbol", Font.BOLD, SQUARE_SIZE);
