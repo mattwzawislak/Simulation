@@ -21,7 +21,7 @@ public class FrameManager {
         final JLabel delayLabel = new JLabel("Delay: ");
         final JSpinner delay = new JSpinner(new SpinnerNumberModel(25, 0, 1000, 1));
         final JLabel lengthLabel = new JLabel("Length: ");
-        final JSpinner length = new JSpinner(new SpinnerNumberModel(100, 1, 10000, 1));
+        final JSpinner length = new JSpinner(new SpinnerNumberModel(128, 1, 10000, 1));
         final JButton start = new JButton("Start");
 
         start.addActionListener(e -> {

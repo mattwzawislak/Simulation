@@ -53,8 +53,8 @@ public class DisplayPanel extends JPanel {
             final float width = getWidth();
             final float height = getHeight();
 
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, (int) width, (int) height);
+            //g.setColor(Color.BLACK);
+            //g.fillRect(0, 0, (int) width, (int) height);
 
             final float barWidth = width / length;
             final float barHeight = height / length;
@@ -66,7 +66,7 @@ public class DisplayPanel extends JPanel {
 
                 drawBar(g, x, height - y, barWidth, y, array.getMarker().colorFor(i));
             }
-            g.setColor(Color.WHITE);
+            g.setColor(Color.BLACK);
             final Counter counter = array.getCounter();
             final String format = String.format(FORMAT, algorithm.toString(), counter.getCompares(), counter.getAccesses());
             g.drawString(format, 3, 20);
@@ -81,7 +81,7 @@ public class DisplayPanel extends JPanel {
         final int newHeight = (int) Math.ceil(height);
         g.fillRect(newX, newY, newWidth, newHeight);
         if (newWidth >= 2) {
-            g.setColor(Color.BLACK);
+            g.setColor(Color.WHITE);
             g.drawLine(newX, newY, newX, newHeight + newY); // Fake a rectangle since both sides have lines
         }
     }

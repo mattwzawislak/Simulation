@@ -1,6 +1,8 @@
 package org.obicere.simulation.regex;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +14,7 @@ public class Graph {
 
     private final static char[] DIGITS = {'2', '1', '3', '4'};
 
-    private final BufferedImage image;
+    private volatile BufferedImage image;
 
     private final Pattern pattern;
 
@@ -23,7 +25,7 @@ public class Graph {
     private volatile boolean calculating = false;
 
     public Graph(final int size, final String regex) {
-        if(size > 14){
+        if (size > 14) {
             throw new IllegalArgumentException("Invalid size. Size 15 requires roughly 16GB of RAM available. ");
         }
         this.pattern = Pattern.compile(regex);
@@ -32,8 +34,11 @@ public class Graph {
         this.image = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
     }
 
-    public void apply(){
+    public void apply() {
         calculating = true;
+        if (image == null) {
+            return;
+        }
         final Graphics g = image.getGraphics();
 
         g.setColor(Color.BLACK);
@@ -44,7 +49,12 @@ public class Graph {
                     g.fillRect(x, y, 1, 1);
                 }
             }
+            if (Thread.interrupted()) {
+                image = null; // Biggest consumer of memory - clear it first
+                return;
+            }
         }
+        g.dispose();
         calculating = false;
     }
 
@@ -63,7 +73,7 @@ public class Graph {
         return image;
     }
 
-    public boolean isCalculating(){
+    public boolean isCalculating() {
         return calculating;
     }
 }

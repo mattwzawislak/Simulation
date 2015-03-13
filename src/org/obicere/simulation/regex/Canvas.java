@@ -16,18 +16,31 @@ public class Canvas extends JPanel {
 
     private Graph graph;
 
+    private volatile Thread worker;
+
     public void applyRegex(final int size, final String regex) {
         Objects.requireNonNull(regex);
         graph = null;
         System.gc();
         this.graph = new Graph(size, regex);
-        new Thread(graph::apply).start();
+        this.worker = new Thread(graph::apply);
+
+        worker.start();
         new ConditionalTimer(15, new TimerTask() {
             @Override
             public void run() {
                 repaint();
             }
-        }, graph::isCalculating);
+        }, () -> graph != null && graph.isCalculating() && isVisible());
+    }
+
+    public void interrupt() {
+        if (worker != null) {
+            worker.interrupt();
+        }
+        graph = null;
+        worker = null;
+        System.gc();
     }
 
     @Override
@@ -43,6 +56,10 @@ public class Canvas extends JPanel {
         }
         final Image draw = graph.getImage();
 
+        if (draw == null) {
+            return;
+        }
+
         final int width = getWidth();
         final int height = getHeight();
 
@@ -53,6 +70,7 @@ public class Canvas extends JPanel {
         final Image scaledDraw = draw.getScaledInstance(letterBoxSize, letterBoxSize, Image.SCALE_FAST);
 
         g.drawImage(scaledDraw, paddingWidth, paddingHeight, letterBoxSize, letterBoxSize, this);
+        g.dispose();
     }
 
 }

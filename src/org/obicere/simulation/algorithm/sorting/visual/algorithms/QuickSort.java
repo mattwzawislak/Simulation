@@ -31,12 +31,14 @@ public class QuickSort implements AlgorithmImplementation {
         int j = end;
         while (i <= j) {
             while (array.compareValues(array.get(i), pivot) < 0) {
+                array.getMarker().mark(j);
                 array.getMarker().markUnique(middle);
                 array.sleep(delay);
                 i++;
             }
 
             while (array.compareValues(array.get(j), pivot) > 0) {
+                array.getMarker().mark(i);
                 array.getMarker().markUnique(middle);
                 array.sleep(delay);
                 j--;

@@ -1,9 +1,19 @@
 package org.obicere.simulation.regex;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -54,7 +64,10 @@ public class FrameManager {
 
         });
 
-        graph.addActionListener(e -> canvas.applyRegex((Integer) sizeSpinner.getValue(), regex.getText()));
+        graph.addActionListener(e -> {
+            canvas.interrupt();
+            canvas.applyRegex((Integer) sizeSpinner.getValue(), regex.getText());
+        });
 
         controls.add(regex);
         controls.add(sizeSpinner);
@@ -62,6 +75,13 @@ public class FrameManager {
 
         frame.add(canvas, BorderLayout.CENTER);
         frame.add(controls, BorderLayout.SOUTH);
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(final WindowEvent e) {
+                canvas.interrupt();
+            }
+        });
 
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.pack();

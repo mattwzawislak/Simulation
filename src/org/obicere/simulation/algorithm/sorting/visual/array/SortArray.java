@@ -92,7 +92,7 @@ public class SortArray {
         return array[i];
     }
 
-    public int getValue(final int i){
+    public int getValue(final int i) {
         return array[i];
     }
 
@@ -108,6 +108,13 @@ public class SortArray {
         check(i);
         check(j - 1);
         marker.markRangeUnique(i, j - 1);
+        counter.multiAccessed(j - i);
+        return new SortArray(array, counter, marker, i, j);
+    }
+
+    public SortArray selectUnmarked(final int i, final int j) {
+        check(i);
+        check(j - 1);
         counter.multiAccessed(j - i);
         return new SortArray(array, counter, marker, i, j);
     }
@@ -148,7 +155,7 @@ public class SortArray {
         return x - y;
     }
 
-    public int compareValues(final int a, final int b){
+    public int compareValues(final int a, final int b) {
         counter.compared();
         return a - b;
     }

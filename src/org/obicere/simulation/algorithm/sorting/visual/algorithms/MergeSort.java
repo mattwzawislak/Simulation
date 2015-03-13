@@ -2,8 +2,6 @@ package org.obicere.simulation.algorithm.sorting.visual.algorithms;
 
 import org.obicere.simulation.algorithm.sorting.visual.array.SortArray;
 
-import java.util.Arrays;
-
 /**
  * @author Obicere
  */
@@ -29,8 +27,8 @@ public class MergeSort implements AlgorithmImplementation {
             return;
         }
         final int mid = start + (end - start) / 2;
-        final SortArray a = array.selectUnique(start, mid);
-        final SortArray b = array.selectUnique(mid, end);
+        final SortArray a = array.selectUnmarked(start, mid);
+        final SortArray b = array.selectUnmarked(mid, end);
         mergeSort(a, start, mid, delay);
         mergeSort(b, mid, end, delay);
 

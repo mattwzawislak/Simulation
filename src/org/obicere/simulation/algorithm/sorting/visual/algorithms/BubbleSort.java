@@ -25,9 +25,9 @@ public class BubbleSort implements AlgorithmImplementation {
                 final int compare = array.compare(i, i + 1);
                 if (compare > 0) {
                     array.swap(i, i + 1);
-                    array.sleep(delay);
                     swapped = true;
                 }
+                array.sleep(delay);
             }
         }
     }

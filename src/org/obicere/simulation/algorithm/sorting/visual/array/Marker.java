@@ -7,7 +7,7 @@ import java.awt.*;
  */
 public class Marker {
 
-    private static final Color DEFAULT = Color.WHITE;
+    private static final Color DEFAULT = Color.DARK_GRAY;
 
     private static final Color SINGLE_COLOR = Color.RED;
 

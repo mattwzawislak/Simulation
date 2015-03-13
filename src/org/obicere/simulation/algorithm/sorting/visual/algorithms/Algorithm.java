@@ -11,6 +11,8 @@ public enum Algorithm {
 
     BUBBLE_SORT(new BubbleSort()),
 
+    COCKTAIL_SORT(new CocktailSort()),
+
     INSERTION_SORT(new InsertionSort()),
 
     MERGE_SORT(new MergeSort()),
