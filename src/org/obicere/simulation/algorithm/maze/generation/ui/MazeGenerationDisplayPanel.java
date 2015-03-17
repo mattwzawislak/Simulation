@@ -15,8 +15,8 @@ public class MazeGenerationDisplayPanel extends JPanel {
 
     private static final Dimension PREFERRED_SIZE = new Dimension(500, 500);
 
-    private static final Color BACKGROUND_COLOR = new Color(0x101010);
-    private static final Color FOREGROUND_COLOR = new Color(0xEEEEEE);
+    private static final Color FOREGROUND_COLOR = new Color(0x101010);
+    private static final Color BACKGROUND_COLOR = new Color(0xEEEEEE);
 
     private final MazeGenerator generator;
 
@@ -43,6 +43,9 @@ public class MazeGenerationDisplayPanel extends JPanel {
         final int rows = graph.getRowCount();
         final int columns = graph.getColumnCount();
         final float size = getSquareSize(rows, columns);
+
+        g.drawRect(0, 0, (int) (columns * size * 2 - size), (int) (rows * size * 2 - size));
+
         synchronized (graph.getRenderLock()) {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
@@ -61,7 +64,7 @@ public class MazeGenerationDisplayPanel extends JPanel {
             }
             final MazeGenerationAlgorithm algorithm = generator.getWorkingAlgorithm();
             if (algorithm != null) {
-                algorithm.paintHelpers(g);
+                algorithm.paintHelpers(g, size);
             }
         }
     }
@@ -75,12 +78,12 @@ public class MazeGenerationDisplayPanel extends JPanel {
                 linkY = y - size;
                 break;
             case MazeGraph.DIRECTION_RIGHT:
-                linkX = x + size * 2;
+                linkX = x + size;
                 linkY = y;
                 break;
             case MazeGraph.DIRECTION_DOWN:
                 linkX = x;
-                linkY = y + size * 2;
+                linkY = y + size;
                 break;
             case MazeGraph.DIRECTION_LEFT:
                 linkX = x - size;
@@ -92,15 +95,11 @@ public class MazeGenerationDisplayPanel extends JPanel {
         g.fillRect(Math.round(linkX), Math.round(linkY), (int) size + 1, (int) size + 1);
     }
 
-    private int smoothSize(final float size, final float offset) {
-        return (int) ((size + offset) - (int) offset);
-    }
-
     private float indexToPixel(final float size, final int index) {
         if (index == 0) {
             return 0;
         }
-        return size * ((index << 1) - 1);
+        return size * (index << 1);
     }
 
     private float getSquareSize(final int rows, final int columns) {

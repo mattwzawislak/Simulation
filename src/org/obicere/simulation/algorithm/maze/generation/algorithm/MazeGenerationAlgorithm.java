@@ -15,7 +15,7 @@ public interface MazeGenerationAlgorithm {
 
     public String getName();
 
-    public void paintHelpers(final Graphics g);
+    public void paintHelpers(final Graphics g, final float squareSize);
 
     public boolean generateMaze(final MazeGraph graph);
 

@@ -1,10 +1,8 @@
 package org.obicere.simulation.algorithm.maze.generation.ui;
 
 import org.obicere.simulation.algorithm.maze.generation.MazeGeneration;
-import org.obicere.simulation.algorithm.maze.generation.algorithm.MazeGenerationAlgorithm;
 import org.obicere.simulation.algorithm.maze.generation.algorithm.MazeGenerationAlgorithmSet;
 import org.obicere.simulation.algorithm.maze.generation.util.MazeGenerator;
-import org.obicere.simulation.algorithm.maze.generation.util.MazeGraph;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,10 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
-import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
 
 /**
@@ -61,6 +58,10 @@ public class MazeGenerationFrameManager {
         frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
+
+        new Timer(15, e -> {
+            frame.repaint();
+        }).start();
     }
 
 }
