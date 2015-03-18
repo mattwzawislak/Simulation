@@ -20,12 +20,12 @@ import java.util.regex.Pattern;
 /**
  * @author Obicere
  */
-public class FrameManager {
+public class RegexFractalFrameManager {
 
     private static final Color BAD_PATTERN  = new Color(128, 0, 0);
     private static final Color GOOD_PATTERN = new Color(0, 128, 0);
 
-    public FrameManager() {
+    public RegexFractalFrameManager() {
 
         final JFrame frame = new JFrame("Regex Fractals");
 
@@ -33,7 +33,7 @@ public class FrameManager {
         final JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 
         final JTextField regex = new JTextField(20);
-        final JSpinner sizeSpinner = new JSpinner(new SpinnerNumberModel(10, 1, 14, 1));
+        final JSpinner sizeSpinner = new JSpinner(new SpinnerNumberModel(10, 1, 30, 1));
         final JButton graph = new JButton("Graph");
 
         regex.getDocument().addDocumentListener(new DocumentListener() {

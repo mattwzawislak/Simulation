@@ -21,7 +21,7 @@ public class RegexFractals extends Simulation {
         SwingUtilities.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                new FrameManager();
+                new RegexFractalFrameManager();
             } catch (final Exception e) {
                 e.printStackTrace();
             }

@@ -1,9 +1,6 @@
 package org.obicere.simulation.regex;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +11,9 @@ public class Graph {
 
     private final static char[] DIGITS = {'2', '1', '3', '4'};
 
-    private volatile BufferedImage image;
+    private final Object renderLock = new Object();
+
+    private final LinkedList<Boolean> render = new LinkedList<>();
 
     private final Pattern pattern;
 
@@ -25,36 +24,39 @@ public class Graph {
     private volatile boolean calculating = false;
 
     public Graph(final int size, final String regex) {
-        if (size > 14) {
-            throw new IllegalArgumentException("Invalid size. Size 15 requires roughly 16GB of RAM available. ");
-        }
         this.pattern = Pattern.compile(regex);
         this.size = size;
         this.imageSize = 1 << size;
-        this.image = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
+    }
+
+    public LinkedList<Boolean> getRenderCache() {
+        return render;
+    }
+
+    public Object getRenderLock() {
+        return renderLock;
+    }
+
+    public int getImageSize() {
+        return imageSize;
     }
 
     public void apply() {
         calculating = true;
-        if (image == null) {
-            return;
-        }
-        final Graphics g = image.getGraphics();
-
-        g.setColor(Color.BLACK);
         for (int x = 0; x < imageSize; x++) {
             for (int y = 0; y < imageSize; y++) {
                 final Matcher matcher = pattern.matcher(getName(x, y));
-                if (!matcher.matches()) {
-                    g.fillRect(x, y, 1, 1);
+                synchronized (renderLock) {
+                    render.add(!matcher.matches());
                 }
             }
             if (Thread.interrupted()) {
-                image = null; // Biggest consumer of memory - clear it first
+                synchronized (renderLock) {
+                    render.clear();
+                }
                 return;
             }
         }
-        g.dispose();
         calculating = false;
     }
 
@@ -67,10 +69,6 @@ public class Graph {
             y >>>= 1;
         }
         return new String(buf, (32 - size), size);
-    }
-
-    public Image getImage() {
-        return image;
     }
 
     public boolean isCalculating() {

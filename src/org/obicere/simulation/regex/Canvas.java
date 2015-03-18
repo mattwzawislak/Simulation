@@ -3,9 +3,10 @@ package org.obicere.simulation.regex;
 import org.obicere.utility.util.ConditionalTimer;
 
 import javax.swing.JPanel;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.TimerTask;
 
@@ -18,10 +19,14 @@ public class Canvas extends JPanel {
 
     private volatile Thread worker;
 
+    private volatile int i = 0;
+    private volatile int j = 0;
+
+    public boolean refresh = false;
+
     public void applyRegex(final int size, final String regex) {
         Objects.requireNonNull(regex);
-        graph = null;
-        System.gc();
+        clean();
         this.graph = new Graph(size, regex);
         this.worker = new Thread(graph::apply);
 
@@ -32,6 +37,14 @@ public class Canvas extends JPanel {
                 repaint();
             }
         }, () -> graph != null && graph.isCalculating() && isVisible());
+    }
+
+    private void clean() {
+        i = 0;
+        j = 0;
+        graph = null;
+        System.gc();
+        refresh = true;
     }
 
     public void interrupt() {
@@ -50,27 +63,39 @@ public class Canvas extends JPanel {
 
     @Override
     public void paintComponent(final Graphics g) {
-        super.paintComponent(g);
+        if (refresh) {
+            super.paintComponent(g);
+            refresh = false;
+        }
         if (graph == null) {
             return;
         }
-        final Image draw = graph.getImage();
-
-        if (draw == null) {
-            return;
+        final LinkedList<Boolean> clone;
+        synchronized (graph.getRenderLock()) {
+            final LinkedList<Boolean> render = graph.getRenderCache();
+            clone = new LinkedList<>(render);
+            render.clear();
         }
-
         final int width = getWidth();
         final int height = getHeight();
+        final int size = Math.min(width, height);
+        final float pixel = size / ((float) graph.getImageSize());
 
-        final int letterBoxSize = Math.min(width, height);
-        final int paddingWidth = (width - letterBoxSize) / 2;
-        final int paddingHeight = (height - letterBoxSize) / 2;
+        for (final Boolean next : clone) {
+            if (next) {
+                final float fi = i * pixel;
+                final float fj = j * pixel;
+                final int pi = (int) (fi + pixel - (int) fi);
+                final int pj = (int) (fj + pixel - (int) fj);
+                g.fillRect((int) fi, (int) fj, pi, pj);
+            }
+            i++;
+            if (i == graph.getImageSize()) {
+                i = 0;
+                j++;
+            }
+        }
 
-        final Image scaledDraw = draw.getScaledInstance(letterBoxSize, letterBoxSize, Image.SCALE_FAST);
-
-        g.drawImage(scaledDraw, paddingWidth, paddingHeight, letterBoxSize, letterBoxSize, this);
-        g.dispose();
     }
 
 }
