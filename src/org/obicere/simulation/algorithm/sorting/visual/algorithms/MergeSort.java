@@ -43,24 +43,32 @@ public class MergeSort implements AlgorithmImplementation {
             array.compare(i, j); // Fake comparisons. Issue has to do with cloned arrays
             if (ca[i - start] < cb[j - mid]) {
                 array.set(k, ca[i - start]);
-                array.sleep(delay);
+                if (!array.sleep(delay)) {
+                    return;
+                }
                 i++;
             } else {
                 array.set(k, cb[j - mid]);
-                array.sleep(delay);
+                if (!array.sleep(delay)) {
+                    return;
+                }
                 j++;
             }
             k++;
         }
         while (i < a.size() + start) {
             array.set(k, ca[i - start]);
-            array.sleep(delay);
+            if (!array.sleep(delay)) {
+                return;
+            }
             i++;
             k++;
         }
         while (j < b.size() + mid) {
             array.set(k, cb[j - mid]);
-            array.sleep(delay);
+            if (!array.sleep(delay)) {
+                return;
+            }
             j++;
             k++;
         }

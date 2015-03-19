@@ -27,7 +27,9 @@ public class BubbleSort implements AlgorithmImplementation {
                     array.swap(i, i + 1);
                     swapped = true;
                 }
-                array.sleep(delay);
+                if (!array.sleep(delay)) {
+                    return;
+                }
             }
         }
     }

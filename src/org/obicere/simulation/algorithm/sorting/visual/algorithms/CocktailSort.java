@@ -18,7 +18,7 @@ public class CocktailSort implements AlgorithmImplementation {
     public void sort(final SortArray array, final int delay) {
         int begin = -1;
         int end = array.size() - 2;
-        boolean swapped = false;
+        boolean swapped;
         do {
             swapped = false;
             begin++;
@@ -27,7 +27,9 @@ public class CocktailSort implements AlgorithmImplementation {
                     array.swap(i, i + 1);
                     swapped = true;
                 }
-                array.sleep(delay);
+                if (!array.sleep(delay)) {
+                    return;
+                }
             }
 
             if (!swapped) {
@@ -40,7 +42,9 @@ public class CocktailSort implements AlgorithmImplementation {
                     array.swap(i, i + 1);
                     swapped = true;
                 }
-                array.sleep(delay);
+                if (!array.sleep(delay)) {
+                    return;
+                }
             }
 
         } while (swapped);

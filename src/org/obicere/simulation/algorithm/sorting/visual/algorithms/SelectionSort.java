@@ -35,7 +35,9 @@ public class SelectionSort implements AlgorithmImplementation {
             if(min != i){
                 array.swap(min, i);
             }
-            array.sleep(delay);
+            if (!array.sleep(delay)) {
+                return;
+            }
 
         }
 

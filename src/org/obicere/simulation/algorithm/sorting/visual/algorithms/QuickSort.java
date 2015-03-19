@@ -33,21 +33,27 @@ public class QuickSort implements AlgorithmImplementation {
             while (array.compareValues(array.get(i), pivot) < 0) {
                 array.getMarker().mark(j);
                 array.getMarker().markUnique(middle);
-                array.sleep(delay);
+                if (!array.sleep(delay)) {
+                    return;
+                }
                 i++;
             }
 
             while (array.compareValues(array.get(j), pivot) > 0) {
                 array.getMarker().mark(i);
                 array.getMarker().markUnique(middle);
-                array.sleep(delay);
+                if (!array.sleep(delay)) {
+                    return;
+                }
                 j--;
             }
 
             array.getMarker().markUnique(middle);
             if (i <= j) {
                 array.swap(i, j);
-                array.sleep(delay);
+                if (!array.sleep(delay)) {
+                    return;
+                }
                 i++;
                 j--;
             }

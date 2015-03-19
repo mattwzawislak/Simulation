@@ -19,7 +19,10 @@ public class BogoSort implements AlgorithmImplementation {
         for (int i = 1; i < array.size(); i++) {
             if (array.compare(i, i - 1) <= 0) {
                 array.shuffle();
-                array.sleep(delay);
+
+                if (!array.sleep(delay)) {
+                    return;
+                }
                 i = 0;
             }
         }

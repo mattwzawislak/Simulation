@@ -20,10 +20,14 @@ public class InsertionSort implements AlgorithmImplementation {
             int j = i;
             while (j > 0 && array.compare(j - 1, j) > 0) {
                 array.swap(j, j - 1);
-                array.sleep(delay);
+                if (!array.sleep(delay)) {
+                    return;
+                }
                 j--;
             }
-            array.sleep(delay);
+            if (!array.sleep(delay)) {
+                return;
+            }
         }
     }
 }
