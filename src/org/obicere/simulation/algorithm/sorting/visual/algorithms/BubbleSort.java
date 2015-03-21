@@ -15,7 +15,7 @@ public class BubbleSort implements AlgorithmImplementation {
     }
 
     @Override
-    public void sort(final SortArray array, final int delay) {
+    public void sort(final SortArray array, final int delay) throws InterruptedException{
         boolean swapped = true;
         int j = 0;
         while (swapped) {
@@ -27,9 +27,7 @@ public class BubbleSort implements AlgorithmImplementation {
                     array.swap(i, i + 1);
                     swapped = true;
                 }
-                if (!array.sleep(delay)) {
-                    return;
-                }
+                array.sleep(delay);
             }
         }
     }

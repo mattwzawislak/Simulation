@@ -15,7 +15,7 @@ public class CocktailSort implements AlgorithmImplementation {
     }
 
     @Override
-    public void sort(final SortArray array, final int delay) {
+    public void sort(final SortArray array, final int delay) throws InterruptedException {
         int begin = -1;
         int end = array.size() - 2;
         boolean swapped;
@@ -27,9 +27,7 @@ public class CocktailSort implements AlgorithmImplementation {
                     array.swap(i, i + 1);
                     swapped = true;
                 }
-                if (!array.sleep(delay)) {
-                    return;
-                }
+                array.sleep(delay);
             }
 
             if (!swapped) {
@@ -42,9 +40,7 @@ public class CocktailSort implements AlgorithmImplementation {
                     array.swap(i, i + 1);
                     swapped = true;
                 }
-                if (!array.sleep(delay)) {
-                    return;
-                }
+                array.sleep(delay);
             }
 
         } while (swapped);

@@ -39,7 +39,11 @@ public class SortingProcess {
             @Override
             protected Void doInBackground() throws Exception {
                 calculating.set(true);
-                algorithm.sort(array, delay);
+                try {
+                    algorithm.sort(array, delay);
+                } catch (final InterruptedException e) {
+                    return null;
+                }
                 for (int i = 1; i < array.size(); i++) {
                     if (i != array.getSilent(i - 1)) {
                         System.err.println("Sorting algorithm failed.");

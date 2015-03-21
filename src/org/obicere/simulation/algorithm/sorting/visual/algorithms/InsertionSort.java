@@ -15,19 +15,15 @@ public class InsertionSort implements AlgorithmImplementation {
     }
 
     @Override
-    public void sort(final SortArray array, final int delay) {
+    public void sort(final SortArray array, final int delay) throws InterruptedException {
         for (int i = 1; i < array.size(); i++) {
             int j = i;
             while (j > 0 && array.compare(j - 1, j) > 0) {
                 array.swap(j, j - 1);
-                if (!array.sleep(delay)) {
-                    return;
-                }
+                array.sleep(delay);
                 j--;
             }
-            if (!array.sleep(delay)) {
-                return;
-            }
+            array.sleep(delay);
         }
     }
 }

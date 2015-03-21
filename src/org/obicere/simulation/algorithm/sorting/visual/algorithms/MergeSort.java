@@ -15,14 +15,14 @@ public class MergeSort implements AlgorithmImplementation {
     }
 
     @Override
-    public void sort(final SortArray array, final int delay) {
+    public void sort(final SortArray array, final int delay) throws InterruptedException {
         if (array.size() < 2) {
             return;
         }
         mergeSort(array, 0, array.size(), delay);
     }
 
-    public void mergeSort(final SortArray array, final int start, final int end, final int delay) {
+    public void mergeSort(final SortArray array, final int start, final int end, final int delay) throws InterruptedException {
         if (array.size() < 2) {
             return;
         }
@@ -43,32 +43,24 @@ public class MergeSort implements AlgorithmImplementation {
             array.compare(i, j); // Fake comparisons. Issue has to do with cloned arrays
             if (ca[i - start] < cb[j - mid]) {
                 array.set(k, ca[i - start]);
-                if (!array.sleep(delay)) {
-                    return;
-                }
+                array.sleep(delay);
                 i++;
             } else {
                 array.set(k, cb[j - mid]);
-                if (!array.sleep(delay)) {
-                    return;
-                }
+                array.sleep(delay);
                 j++;
             }
             k++;
         }
         while (i < a.size() + start) {
             array.set(k, ca[i - start]);
-            if (!array.sleep(delay)) {
-                return;
-            }
+            array.sleep(delay);
             i++;
             k++;
         }
         while (j < b.size() + mid) {
             array.set(k, cb[j - mid]);
-            if (!array.sleep(delay)) {
-                return;
-            }
+            array.sleep(delay);
             j++;
             k++;
         }

@@ -175,17 +175,9 @@ public class SortArray {
         }
     }
 
-    public boolean sleep(final int delay) {
-        if (Thread.interrupted()) {
-            return false;
-        }
-        try {
-            Thread.sleep(delay);
-        } catch (final Exception e) {
-            return false;
-        }
+    public void sleep(final int delay) throws InterruptedException {
+        Thread.sleep(delay);
         marker.clear();
-        return true;
     }
 
     public int[] cloneData() {

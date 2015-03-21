@@ -15,14 +15,11 @@ public class BogoSort implements AlgorithmImplementation {
     }
 
     @Override
-    public void sort(final SortArray array, final int delay) {
+    public void sort(final SortArray array, final int delay) throws InterruptedException {
         for (int i = 1; i < array.size(); i++) {
             if (array.compare(i, i - 1) <= 0) {
                 array.shuffle();
-
-                if (!array.sleep(delay)) {
-                    return;
-                }
+                array.sleep(delay);
                 i = 0;
             }
         }

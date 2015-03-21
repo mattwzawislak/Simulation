@@ -27,7 +27,7 @@ public enum Algorithm {
         this.impl = impl;
     }
 
-    public void sort(final SortArray array, final int delay) {
+    public void sort(final SortArray array, final int delay) throws InterruptedException {
         impl.sort(array, delay);
     }
 
