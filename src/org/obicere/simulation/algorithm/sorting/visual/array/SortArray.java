@@ -175,14 +175,8 @@ public class SortArray {
         }
     }
 
-    public void sleep(final int delay) {
-        try {
-            Thread.sleep(delay);
-        } catch (final Exception e) {
-            // If this error is thrown, the current process was closed.
-            // So we can just ignore this error. Sloppy, I know.
-            Thread.currentThread().interrupt();
-        }
+    public void sleep(final int delay) throws InterruptedException {
+        Thread.sleep(delay);
         marker.clear();
     }
 

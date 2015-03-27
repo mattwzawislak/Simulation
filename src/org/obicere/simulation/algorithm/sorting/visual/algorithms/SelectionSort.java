@@ -15,7 +15,7 @@ public class SelectionSort implements AlgorithmImplementation {
     }
 
     @Override
-    public void sort(final SortArray array, final int delay) {
+    public void sort(final SortArray array, final int delay) throws InterruptedException {
         final int length = array.size();
         for(int i = 0 ; i < length - 1; i++){
             final int flag = array.get(i);

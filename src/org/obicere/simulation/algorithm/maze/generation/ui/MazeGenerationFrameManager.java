@@ -56,8 +56,8 @@ public class MazeGenerationFrameManager {
         frame.add(display, BorderLayout.CENTER);
         frame.add(control, BorderLayout.SOUTH);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
         new ConditionalTimer(15, new TimerTask() {

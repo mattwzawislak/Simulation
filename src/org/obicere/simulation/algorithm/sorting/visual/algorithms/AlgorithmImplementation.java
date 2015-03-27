@@ -9,6 +9,6 @@ public interface AlgorithmImplementation {
 
     public String getName();
 
-    public void sort(final SortArray array, final int delay);
+    public void sort(final SortArray array, final int delay) throws InterruptedException;
 
 }

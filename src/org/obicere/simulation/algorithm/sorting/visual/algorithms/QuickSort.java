@@ -15,11 +15,12 @@ public class QuickSort implements AlgorithmImplementation {
     }
 
     @Override
-    public void sort(final SortArray array, final int delay) {
+    public void sort(final SortArray array, final int delay) throws InterruptedException {
         quickSort(array, 0, array.size() - 1, delay);
+
     }
 
-    public void quickSort(final SortArray array, final int start, final int end, final int delay) {
+    public void quickSort(final SortArray array, final int start, final int end, final int delay) throws InterruptedException {
         if (start >= end) {
             return;
         }

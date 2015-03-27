@@ -15,10 +15,10 @@ public class CocktailSort implements AlgorithmImplementation {
     }
 
     @Override
-    public void sort(final SortArray array, final int delay) {
+    public void sort(final SortArray array, final int delay) throws InterruptedException {
         int begin = -1;
         int end = array.size() - 2;
-        boolean swapped = false;
+        boolean swapped;
         do {
             swapped = false;
             begin++;

@@ -15,14 +15,14 @@ public class MergeSort implements AlgorithmImplementation {
     }
 
     @Override
-    public void sort(final SortArray array, final int delay) {
+    public void sort(final SortArray array, final int delay) throws InterruptedException {
         if (array.size() < 2) {
             return;
         }
         mergeSort(array, 0, array.size(), delay);
     }
 
-    public void mergeSort(final SortArray array, final int start, final int end, final int delay) {
+    public void mergeSort(final SortArray array, final int start, final int end, final int delay) throws InterruptedException {
         if (array.size() < 2) {
             return;
         }
