@@ -105,7 +105,6 @@ public class WilsonAlgorithm implements MazeGenerationAlgorithm {
                         wi += deltaI(next);
                         wj += deltaJ(next);
                         if (graph.hasCellAt(wi, wj)) {
-                            workingNodes.add(new WilsonNode(wi, wj, next));
                             break;
                         }
                         final WilsonNode node = new WilsonNode(wi, wj, next);
@@ -123,7 +122,7 @@ public class WilsonAlgorithm implements MazeGenerationAlgorithm {
                         tick();
                     }
                     synchronized (graph.getRenderLock()) {
-
+                        workingNodes.add(new WilsonNode(wi, wj, last));
                         final int length = workingNodes.size();
                         for (int k = length - 1; k > 0; k--) {
                             final WilsonNode node = workingNodes.get(k);
@@ -174,19 +173,19 @@ public class WilsonAlgorithm implements MazeGenerationAlgorithm {
         }
     }
 
-    private int nextDirection(final int i, final int j, final int rows, final int columns, final int previous) {
+    private int nextDirection(final int i, final int j, final int rowLimit, final int columnLimit, final int previous) {
         boolean up = true;
         boolean right = true;
         boolean down = true;
         boolean left = true;
         if (i == 0) {
             up = false;
-        } else if (i == rows) {
+        } else if (i == rowLimit) {
             down = false;
         }
         if (j == 0) {
             left = false;
-        } else if (j == columns) {
+        } else if (j == columnLimit) {
             right = false;
         }
         switch (previous) {
@@ -202,7 +201,7 @@ public class WilsonAlgorithm implements MazeGenerationAlgorithm {
             case DIRECTION_LEFT:
                 right = false;
         }
-        ArrayList<Integer> list = new ArrayList<>(4);
+        final ArrayList<Integer> list = new ArrayList<>(4);
         if (left) {
             list.add(DIRECTION_LEFT);
         }
@@ -231,12 +230,6 @@ public class WilsonAlgorithm implements MazeGenerationAlgorithm {
         private final int i;
         private final int j;
         private final int from;
-
-        private WilsonNode(final int i, final int j) {
-            this.i = i;
-            this.j = j;
-            this.from = -1;
-        }
 
         private WilsonNode(final int i, final int j, final int direction) {
             this.i = i;
