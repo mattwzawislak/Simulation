@@ -18,9 +18,9 @@ import java.awt.event.MouseEvent;
 public class FloodPanel extends JPanel {
 
     private static final Color OUTLINE_COLOR = new Color(0x282828);
-    private static final Color BLOCKED_FILL  = new Color(0x505050);
 
-    private static final Color FLAGGED_FILL = new Color(10, 120, 240);
+    private static final Color BLOCKED_FILL = new Color(0x505050);
+    private static final Color FLAGGED_FILL = new Color(0x0A78F0);
 
     private static final int SQUARE_SIZE = 20;
     private static final int SQUARE_PAD  = 2;
@@ -32,6 +32,9 @@ public class FloodPanel extends JPanel {
     private final FloodData data = new FloodData();
 
     private final ColorCache cache = new ColorCache();
+
+    private volatile int lastI;
+    private volatile int lastJ;
 
     @Override
     public Dimension getPreferredSize() {
@@ -53,7 +56,14 @@ public class FloodPanel extends JPanel {
                 final int height = getHeight();
                 final int newRows = height / SQUARE_SIZE;
                 final int newColumns = width / SQUARE_SIZE;
+
                 data.resize(newRows, newColumns);
+                lastI = lastI < 0 ? newRows - 1 : Math.min(lastI, data.getRows() - 1);
+                lastJ = lastJ < 0 ? newColumns - 1 : Math.min(lastJ, data.getColumns() - 1);
+                if (lastI < 0 || lastJ < 0) {
+                    return;
+                }
+                data.calculate(lastI, lastJ);
             }
         });
     }
@@ -121,7 +131,7 @@ public class FloodPanel extends JPanel {
             final int y = e.getY();
             final int i = y / SQUARE_SIZE;
             final int j = x / SQUARE_SIZE;
-            if (i >= data.getRows() || j >= data.getColumns()) {
+            if (i < 0 || j < 0 || i >= data.getRows() || j >= data.getColumns()) {
                 return;
             }
             blocked = data.get(i, j) >= 0;
@@ -133,9 +143,11 @@ public class FloodPanel extends JPanel {
             final int y = e.getY();
             final int i = y / SQUARE_SIZE;
             final int j = x / SQUARE_SIZE;
-            if (i >= data.getRows() || j >= data.getColumns()) {
+            if (i < 0 || j < 0 || i >= data.getRows() || j >= data.getColumns()) {
                 return;
             }
+            lastI = i;
+            lastJ = j;
             data.calculate(i, j);
             repaint();
         }
@@ -145,7 +157,7 @@ public class FloodPanel extends JPanel {
             final int y = e.getY();
             final int i = y / SQUARE_SIZE;
             final int j = x / SQUARE_SIZE;
-            if (i >= data.getRows() || j >= data.getColumns()) {
+            if (i < 0 || j < 0 || i >= data.getRows() || j >= data.getColumns()) {
                 return;
             }
             data.toggled(i, j, blocked);
@@ -156,7 +168,7 @@ public class FloodPanel extends JPanel {
 
     private class ColorCache {
 
-        private final int max = 50;
+        private final int max = 256;
 
         private Color[] cache = new Color[max];
 

@@ -1,9 +1,6 @@
 package org.obicere.simulation.algorithm.flood.calc;
 
-import org.obicere.utility.util.BinaryList;
-
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 /**
  */
@@ -58,7 +55,11 @@ public class FloodData {
     public synchronized void toggled(final int i, final int j, final boolean blocked) {
         checkRange(i, j);
         if (blocked == flags[i][j] >= 0) {
-            flags[i][j] = ~flags[i][j];
+            if (blocked) {
+                flags[i][j] = -1;
+            } else {
+                flags[i][j] = Integer.MAX_VALUE;
+            }
         }
     }
 
