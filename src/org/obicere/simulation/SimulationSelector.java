@@ -1,18 +1,29 @@
 package org.obicere.simulation;
 
-import org.obicere.utility.Reflection;
+import org.obicere.utility.reflect.Reflection;
 import org.obicere.utility.swing.VerticalFlowLayout;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Obicere
@@ -24,7 +35,7 @@ public class SimulationSelector {
     private final Font blankFont;
     private final Font presetFont;
 
-    public SimulationSelector(final List<Class<?>> simulations) {
+    public SimulationSelector(final Set<Class<Simulation>> simulations) {
         final JFrame frame = new JFrame("Simulation Selection");
 
         final LinkedList<SimulationPanel> panels = buildPanels(simulations);
@@ -118,11 +129,11 @@ public class SimulationSelector {
 
     }
 
-    private LinkedList<SimulationPanel> buildPanels(final List<Class<?>> classes) {
+    private LinkedList<SimulationPanel> buildPanels(final Set<Class<Simulation>> classes) {
         final LinkedList<SimulationPanel> panels = new LinkedList<>();
         classes.forEach(e -> {
             try {
-                final Simulation simulation = (Simulation) Reflection.newInstance(e);
+                final Simulation simulation = Reflection.newInstance(e);
                 panels.add(new SimulationPanel(simulation));
             } catch (final Exception ex) {
                 ex.printStackTrace();

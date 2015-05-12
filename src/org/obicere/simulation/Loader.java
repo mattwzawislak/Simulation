@@ -1,10 +1,10 @@
 package org.obicere.simulation;
 
-import org.obicere.utility.Reflection;
+import org.obicere.utility.reflect.Reflection;
 
-import javax.swing.*;
-import java.util.LinkedList;
-import java.util.stream.Stream;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import java.util.Set;
 
 /**
  * @author Obicere
@@ -12,9 +12,7 @@ import java.util.stream.Stream;
 public class Loader {
 
     public static void main(final String[] args) {
-        final Stream<Class<?>> stream = Reflection.subclassOf(Simulation.class);
-        final LinkedList<Class<?>> classes = new LinkedList<>();
-        stream.forEach(classes::add);
+        final Set<Class<Simulation>> classes = Reflection.subclassOf(Simulation.class);
         SwingUtilities.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
