@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class WilsonAlgorithm implements MazeGenerationAlgorithm {
 
-    private static final String NAME = " Wilson's Algorithm";
+    private static final String NAME = "Wilson's Algorithm";
 
     private static final Color WORKING_COLOR = new Color(0x3070F0);
 
@@ -35,6 +35,12 @@ public class WilsonAlgorithm implements MazeGenerationAlgorithm {
 
         for (int i = 0; i < size - 1; i++) {
             final WilsonNode node = workingNodes.get(i);
+
+            if (node == null) {
+                // If null node, then error in the calculation cycle.
+                // Unknown implications.
+                break;
+            }
 
             final float x = indexToPixel(squareSize, node.j);
             final float y = indexToPixel(squareSize, node.i);
@@ -100,6 +106,10 @@ public class WilsonAlgorithm implements MazeGenerationAlgorithm {
                     int wj = j;
                     int last = 0;
                     while (!graph.hasCellAt(wi, wj)) {
+                        tick();
+                        if (Thread.interrupted()) {
+                            return false;
+                        }
                         final int next = nextDirection(wi, wj, rows - 1, columns - 1, last);
                         last = next;
                         wi += deltaI(next);
@@ -114,12 +124,12 @@ public class WilsonAlgorithm implements MazeGenerationAlgorithm {
                                 final int remove = workingNodes.size() - index;
                                 for (int k = 1; k < remove; k++) {
                                     workingNodes.remove(index + 1);
+
                                 }
                             } else {
                                 workingNodes.add(node);
                             }
                         }
-                        tick();
                     }
                     synchronized (graph.getRenderLock()) {
                         workingNodes.add(new WilsonNode(wi, wj, last));
@@ -220,8 +230,7 @@ public class WilsonAlgorithm implements MazeGenerationAlgorithm {
     private void tick() {
         try {
             Thread.sleep(0);
-        } catch (final InterruptedException e) {
-            e.printStackTrace();
+        } catch (final InterruptedException ignored) {
         }
     }
 

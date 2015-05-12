@@ -1,24 +1,26 @@
 package org.obicere.simulation.algorithm.maze.generation.algorithm;
 
+import java.util.function.Supplier;
+
 /**
  */
 public enum MazeGenerationAlgorithmSet {
 
-    WILSON_ALGORITHM(new WilsonAlgorithm());
+    WILSON_ALGORITHM(WilsonAlgorithm::new);
 
-    private final MazeGenerationAlgorithm algorithm;
+    private final Supplier<MazeGenerationAlgorithm> algorithm;
 
-    private MazeGenerationAlgorithmSet(final MazeGenerationAlgorithm algorithm) {
+    private MazeGenerationAlgorithmSet(final Supplier<MazeGenerationAlgorithm> algorithm) {
         this.algorithm = algorithm;
     }
 
     @Override
     public String toString() {
-        return algorithm.getName();
+        return getAlgorithm().getName();
     }
 
     public MazeGenerationAlgorithm getAlgorithm() {
-        return algorithm;
+        return algorithm.get();
     }
 
 }

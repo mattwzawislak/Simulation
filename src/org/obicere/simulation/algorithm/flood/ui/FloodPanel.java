@@ -3,6 +3,7 @@ package org.obicere.simulation.algorithm.flood.ui;
 import org.obicere.simulation.algorithm.flood.calc.FloodData;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -149,7 +150,7 @@ public class FloodPanel extends JPanel {
             lastI = i;
             lastJ = j;
             data.calculate(i, j);
-            repaint();
+            SwingUtilities.invokeLater(() -> getParent().repaint());
         }
 
         private void click(final MouseEvent e) {
@@ -161,7 +162,7 @@ public class FloodPanel extends JPanel {
                 return;
             }
             data.toggled(i, j, blocked);
-            repaint();
+            SwingUtilities.invokeLater(() -> getParent().repaint());
         }
 
     }
