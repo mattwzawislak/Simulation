@@ -15,9 +15,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -70,38 +67,83 @@ public class ClippingPanel extends JPanel {
 
                 points[i] = new Point2F(x, y);
             }
+            final List<Line2F> newLines = new LinkedList<>();
 
-            final Line2F[] newLines = new Line2F[3 * count];
-
-            int i = 0;
-            for(final Point2F focus : points){
-                final Comparator<Point2F> sorter = (o1, o2) -> {
-                    if(focus.equals(o1)){
-                        return 1;
+            // simple triangulation algorithm
+            for (int i = 0; i < count; i++) {
+                for (int j = i + 1; j < count; j++) {
+                    for (int k = j + 1; k < count; k++) {
+                        boolean isTriangle = true;
+                        for (int a = 0; a < count; a++) {
+                            if (a == i || a == j || a == k) {
+                                continue;
+                            }
+                            if (inside(points[a], points[i], points[j], points[k])) {
+                                isTriangle = false;
+                                break;
+                            }
+                        }
+                        if (isTriangle) {
+                            newLines.add(new Line2F(points[i], points[j]));
+                            newLines.add(new Line2F(points[j], points[k]));
+                            newLines.add(new Line2F(points[k], points[i]));
+                        }
                     }
-                    if(focus.equals(o2)){
-                        return -1;
-                    }
-                    return Double.compare(focus.distance(o1), focus.distance(o2));
-                };
-
-                Arrays.sort(points, sorter);
-
-                newLines[i++] = new Line2F(focus, points[0]);
-                newLines[i++] = new Line2F(focus, points[1]);
-                newLines[i++] = new Line2F(focus, points[2]);
+                }
             }
 
             linesLock.lock();
             lines.clear();
-            Collections.addAll(lines, newLines);
+            lines.addAll(newLines);
         } finally {
             linesLock.unlock();
         }
     }
 
+    private float side(final Point2F a, final Point2F b){
+        return a.getX() * b.getY() - a.getY() * b.getX();
+    }
+    
+    public float area(final Point2F triangleP1, final Point2F triangleP2, final Point2F triangleP3) {
+        final float side12 = side(triangleP1, triangleP2);
+        final float side23 = side(triangleP2, triangleP3);
+        final float side31 = side(triangleP3, triangleP1);
+        
+        return 0.5f * (side12 + side23 + side31);
+    }
+
+    private boolean inside(final Point2F point, final Point2F triangleP1, final Point2F triangleP2, final Point2F triangleP3) {
+        final float area = area(triangleP1, triangleP2, triangleP3);
+        if (area > 0) {
+            return (in(point, triangleP1, triangleP2, triangleP3) > 0);
+        } else if (area < 0) {
+            return (in(point, triangleP1, triangleP2, triangleP3) < 0);
+        }
+        return true;
+    }
+
+    private float in(final Point2F point, final Point2F triangleP1, final Point2F triangleP2, final Point2F triangleP3) {
+        final float adx = triangleP1.getX() - point.getX();
+        final float ady = triangleP1.getY() - point.getY();
+        final float bdx = triangleP2.getX() - point.getX();
+        final float bdy = triangleP2.getY() - point.getY();
+        final float cdx = triangleP3.getX() - point.getX();
+        final float cdy = triangleP3.getY() - point.getY();
+
+        final float abdet = adx * bdy - bdx * ady;
+        final float bcdet = bdx * cdy - cdx * bdy;
+        final float cadet = cdx * ady - adx * cdy;
+
+        final float alift = adx * adx + ady * ady;
+        final float blift = bdx * bdx + bdy * bdy;
+        final float clift = cdx * cdx + cdy * cdy;
+
+        return alift * bcdet + blift * cadet + clift * abdet;
+    }
+
+
     @Override
-    protected void paintComponent(final Graphics g){
+    protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
         final Graphics2D g2 = (Graphics2D) g;
 
@@ -116,13 +158,13 @@ public class ClippingPanel extends JPanel {
         final Point2F origin = new Point2F(centerX, centerY);
 
         linesLock.lock();
-        for(final Line2F line : lines){
+        for (final Line2F line : lines) {
             drawLine(g2, line, origin);
         }
         linesLock.unlock();
     }
 
-    private void drawViewport(final Graphics g){
+    private void drawViewport(final Graphics g) {
         final int minX = viewport.getMinX();
         final int minY = viewport.getMinY();
         final int maxX = viewport.getMaxX();
@@ -134,11 +176,11 @@ public class ClippingPanel extends JPanel {
         g.drawLine(maxX, minY, minX, minY);
     }
 
-    private void drawLine(final Graphics g, final Line2F line, final Point2F origin){
+    private void drawLine(final Graphics g, final Line2F line, final Point2F origin) {
         final Point2F a = new Point2F(line.getA()).add(origin);
         final Point2F b = new Point2F(line.getB()).add(origin);
 
-        if(viewport.clip(a, b)){
+        if (viewport.clip(a, b)) {
             final int ax = (int) a.getX();
             final int ay = (int) a.getY();
             final int bx = (int) b.getX();
@@ -152,7 +194,7 @@ public class ClippingPanel extends JPanel {
 
         @Override
         public void componentResized(final ComponentEvent e) {
-            if(defaultViewport){
+            if (defaultViewport) {
                 viewport.setMaxX(getWidth() - 5);
                 viewport.setMaxY(getHeight() - 5);
             }
@@ -180,7 +222,7 @@ public class ClippingPanel extends JPanel {
         private volatile int pressY;
 
         @Override
-        public void mousePressed(final MouseEvent e){
+        public void mousePressed(final MouseEvent e) {
             defaultViewport = false;
 
             pressX = e.getX();
@@ -191,7 +233,7 @@ public class ClippingPanel extends JPanel {
         }
 
         @Override
-        public void mouseDragged(final MouseEvent e){
+        public void mouseDragged(final MouseEvent e) {
             final int dragX = e.getX();
             final int dragY = e.getY();
 
