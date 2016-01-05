@@ -1,6 +1,7 @@
 package org.obicere.simulation.regex;
 
-import java.util.LinkedList;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,10 +12,6 @@ public class Graph {
 
     private final static char[] DIGITS = {'2', '1', '3', '4'};
 
-    private final Object renderLock = new Object();
-
-    private final LinkedList<Boolean> render = new LinkedList<>();
-
     private final Pattern pattern;
 
     private final int imageSize;
@@ -23,22 +20,22 @@ public class Graph {
 
     private volatile boolean calculating = false;
 
+    private final BufferedImage image;
+
     public Graph(final int size, final String regex) {
         this.pattern = Pattern.compile(regex);
         this.size = size;
         this.imageSize = 1 << size;
-    }
 
-    public LinkedList<Boolean> getRenderCache() {
-        return render;
-    }
-
-    public Object getRenderLock() {
-        return renderLock;
+        this.image = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_BYTE_BINARY);
     }
 
     public int getImageSize() {
         return imageSize;
+    }
+
+    public Image getImage() {
+        return image;
     }
 
     public void apply() {
@@ -46,18 +43,21 @@ public class Graph {
         for (int x = 0; x < imageSize; x++) {
             for (int y = 0; y < imageSize; y++) {
                 final Matcher matcher = pattern.matcher(getName(x, y));
-                synchronized (renderLock) {
-                    render.add(!matcher.matches());
+                final int color;
+                if (matcher.matches()) {
+                    color = 0xFFFFFF;
+                } else {
+                    color = 0;
                 }
+                image.setRGB(x, y, color);
             }
             if (Thread.interrupted()) {
-                synchronized (renderLock) {
-                    render.clear();
-                }
+                image.flush();
                 return;
             }
         }
         calculating = false;
+        image.flush();
     }
 
     private String getName(int x, int y) {

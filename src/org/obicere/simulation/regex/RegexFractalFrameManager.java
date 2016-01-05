@@ -33,7 +33,7 @@ public class RegexFractalFrameManager {
         final JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 
         final JTextField regex = new JTextField(20);
-        final JSpinner sizeSpinner = new JSpinner(new SpinnerNumberModel(10, 1, 30, 1));
+        final JSpinner sizeSpinner = new JSpinner(new SpinnerNumberModel(5, 1, 10, 1));
         final JButton graph = new JButton("Graph");
 
         regex.getDocument().addDocumentListener(new DocumentListener() {
