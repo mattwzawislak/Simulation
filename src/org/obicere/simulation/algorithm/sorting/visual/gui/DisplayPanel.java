@@ -17,7 +17,7 @@ import java.util.TimerTask;
  */
 public class DisplayPanel extends JPanel {
 
-    private static final String FORMAT = "%s - %d comparisons - %d array accesses.";
+    private static final String FORMAT = "%s - %d comparisons - %d array accesses";
 
     private int length;
 
@@ -56,11 +56,9 @@ public class DisplayPanel extends JPanel {
             super.paintComponent(g);
             final SortArray array = process.getArray();
             final Algorithm algorithm = process.getAlgorithm();
+
             final float width = getWidth();
             final float height = getHeight() - 20;
-
-            //g.setColor(Color.BLACK);
-            //g.fillRect(0, 0, (int) width, (int) height);
 
             final float barWidth = width / length;
             final float barHeight = (height - 20) / length;
@@ -75,7 +73,7 @@ public class DisplayPanel extends JPanel {
             g.setColor(Color.BLACK);
             final Counter counter = array.getCounter();
             final String format = String.format(FORMAT, algorithm.toString(), counter.getCompares(), counter.getAccesses());
-            g.drawString(format, 3, 20);
+            g.drawString(format, 3, 15);
         }
     }
 
