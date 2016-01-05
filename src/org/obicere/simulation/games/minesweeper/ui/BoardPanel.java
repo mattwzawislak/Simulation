@@ -18,7 +18,6 @@ import java.awt.event.MouseEvent;
  */
 public class BoardPanel extends JPanel {
 
-
     private static final int SQUARE_SIZE = 25;
 
     private static final Color FILL_SELECT_COLOR = new Color(0xD0D0D0);
@@ -125,7 +124,7 @@ public class BoardPanel extends JPanel {
         final Flag flag = board.getData().getFlag(i, j);
         final int x = j * SQUARE_SIZE;
         final int y = i * SQUARE_SIZE;
-        g.draw3DRect(x, y, SQUARE_SIZE - 1, SQUARE_SIZE - 1, true);
+        g.drawRect(x, y, SQUARE_SIZE - 1, SQUARE_SIZE - 1);
 
         if (flag == Flag.NONE) {
             return;
