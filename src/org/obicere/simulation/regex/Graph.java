@@ -45,9 +45,9 @@ public class Graph {
                 final Matcher matcher = pattern.matcher(getName(x, y));
                 final int color;
                 if (matcher.matches()) {
-                    color = 0xFFFFFF;
-                } else {
                     color = 0;
+                } else {
+                    color = 0xFFFFFF;
                 }
                 image.setRGB(x, y, color);
             }
